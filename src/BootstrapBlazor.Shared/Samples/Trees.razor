@@ -77,7 +77,7 @@
     <Tree ClickToggleNode="true" Items="GetColorItems()" />
 </DemoBlock>
 
-<DemoBlock Title="获取所有选中节点" Introduction="通过设置 <code>OnCheckedItems</code> 回调委托获取所有节点" Name="TreeNodeColor">
+<DemoBlock Title="获取所有选中节点" Introduction="通过设置 <code>OnCheckedItems</code> 回调委托获取所有节点" Name="CheckedItems">
     <Tree ShowCheckbox="true" Items="@Items" OnCheckedItems="@OnCheckedItems" />
     <BlockLogger @ref="TraceCheckedItems" class="mt-3" />
 </DemoBlock>
