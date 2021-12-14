@@ -120,6 +120,12 @@ namespace BootstrapBlazor.Components
         public Func<TreeItem, Task> OnTreeItemChecked { get; set; } = item => Task.CompletedTask;
 
         /// <summary>
+        /// 获得/设置 树形控件节点选中时返回当前所有选中项回调委托
+        /// </summary>
+        [Parameter]
+        public Func<List<TreeItem>, Task>? OnCheckedItems { get; set; }
+
+        /// <summary>
         /// 获得/设置 节点展开前回调委托
         /// </summary>
         [Parameter]
@@ -169,7 +175,7 @@ namespace BootstrapBlazor.Components
         {
             ActiveItem = item;
             if (ClickToggleNode) await OnExpandRowAsync(item);
-            if (OnTreeItemClick != null) await OnTreeItemClick.Invoke(item);
+            if (OnTreeItemClick != null) await OnTreeItemClick(item);
         }
 
         /// <summary>
@@ -192,7 +198,7 @@ namespace BootstrapBlazor.Components
             item.IsExpanded = !item.IsExpanded;
             if (OnExpandNode != null)
             {
-                await OnExpandNode.Invoke(item);
+                await OnExpandNode(item);
             }
         }
 
@@ -207,7 +213,12 @@ namespace BootstrapBlazor.Components
             // 向下级联操作
             item.CascadeSetCheck(item.Checked);
 
-            if (OnTreeItemChecked != null) await OnTreeItemChecked.Invoke(item);
+            if (OnTreeItemChecked != null) await OnTreeItemChecked(item);
+            if (OnCheckedItems != null)
+            {
+                var checkedItems = Items.Where(s => s.Checked).ToList();
+                await OnCheckedItems(checkedItems);
+            }
         }
     }
 }
