@@ -1,0 +1,13 @@
+﻿@namespace BootstrapBlazor.Components
+
+<CascadingValue Value="this" IsFixed="true">
+    @ChildContent
+</CascadingValue>
+<RenderTemplate>
+    @foreach(var b in Buttons)
+    {
+        <Button AdditionalAttributes="b.AdditionalAttributes" Size="b.Size"
+                Color="@b.Color" Icon="@b.Icon" Text="@b.Text" IsAsync="@b.IsAsync"
+                OnClickWithoutRender="() => OnClick(b)"></Button>
+    }
+</RenderTemplate>
