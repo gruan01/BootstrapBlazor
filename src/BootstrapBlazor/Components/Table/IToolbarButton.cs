@@ -17,10 +17,5 @@ namespace BootstrapBlazor.Components
         /// 
         /// </summary>
         Func<IEnumerable<TItem>, Task>? OnClickCallback { get; set; }
-
-        /// <summary>
-        /// 获得/设置 
-        /// </summary>
-        bool ShowInRow { get; set; }
     }
 }
