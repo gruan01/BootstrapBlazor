@@ -15,9 +15,9 @@ namespace BootstrapBlazor.Components
     public partial class TableExtensionButton
     {
         /// <summary>
-        /// 获得 Toolbar 按钮集合
+        /// 获得 Toolbar 扩展按钮集合
         /// </summary>
-        private List<TableCellButton> Buttons { get; } = new();
+        private List<ButtonBase> Buttons { get; } = new();
 
         /// <summary>
         /// Specifies the content to be rendered inside this
@@ -34,12 +34,12 @@ namespace BootstrapBlazor.Components
         /// <summary>
         /// 添加按钮到工具栏方法
         /// </summary>
-        public void AddButton(TableCellButton button) => Buttons.Add(button);
+        public void AddButton(ButtonBase button) => Buttons.Add(button);
 
         /// <summary>
         /// 添加按钮到工具栏方法
         /// </summary>
-        public void RemoveButton(TableCellButton button) => Buttons.Remove(button);
+        public void RemoveButton(ButtonBase button) => Buttons.Remove(button);
 
         private async Task OnClick(TableCellButton b)
         {
