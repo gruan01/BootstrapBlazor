@@ -764,11 +764,11 @@ RenderFragment<TItem> RenderRowExtendButtons => item =>
                 @if (!isInCell && GetShowDeleteButton(item))
                 {
                     <PopConfirmButton Placement="Placement.Left" Size="Size.ExtraSmall"
-                                        Color="Color.Danger" Icon="fa fa-remove" Text="@DeleteButtonText"
-                                        CloseButtonText="@CancelDeleteButtonText" Content="@ConfirmDeleteContentText"
-                                        ConfirmButtonColor="Color.Danger" ConfirmButtonText="@ConfirmDeleteButtonText"
-                                        OnBeforeClick="@ClickBeforeDelete(item)"
-                                        OnConfirm="DeleteAsync" />
+                                      Color="Color.Danger" Icon="fa fa-remove" Text="@DeleteButtonText"
+                                      CloseButtonText="@CancelDeleteButtonText" Content="@ConfirmDeleteContentText"
+                                      ConfirmButtonColor="Color.Danger" ConfirmButtonText="@ConfirmDeleteButtonText"
+                                      OnBeforeClick="@ClickBeforeDelete(item)"
+                                      OnConfirm="DeleteAsync" />
                 }
             }
             @if (!isInCell)
