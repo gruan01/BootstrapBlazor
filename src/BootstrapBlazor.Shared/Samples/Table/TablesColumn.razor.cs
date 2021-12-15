@@ -110,8 +110,6 @@ namespace BootstrapBlazor.Shared.Samples.Table
             });
         }
 
-        private List<Foo> SelectedRows { get; set; } = new();
-
         [NotNull]
         private Table<Foo>? TableRows { get; set; }
 
@@ -131,8 +129,6 @@ namespace BootstrapBlazor.Shared.Samples.Table
                 Content = content
             });
 
-            SelectedRows.Clear();
-            SelectedRows.Add(item);
             await TableRows.QueryAsync();
         }
 
