@@ -3,6 +3,7 @@
 // Website: https://www.blazor.zone or https://argozhang.github.io/
 
 using Microsoft.AspNetCore.Components;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -87,9 +88,9 @@ namespace BootstrapBlazor.Components
         /// 获得 所有子项集合
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<TreeItem> GetAllSubItems() => Items.Concat(GetSubItems(Items));
+        public IEnumerable<TreeItem> GetAllSubItems(Func<TreeItem, bool>? predicate = null) => Items.Concat(GetSubItems(Items, predicate));
 
-        private static IEnumerable<TreeItem> GetSubItems(List<TreeItem> items) => items.SelectMany(i => i.Items.Any() ? i.Items.Concat(GetSubItems(i.Items)) : i.Items);
+        private static IEnumerable<TreeItem> GetSubItems(List<TreeItem> items, Func<TreeItem, bool>? predicate = null) => items.Where(predicate ?? new Func<TreeItem, bool>(_ => true)).SelectMany(i => i.Items.Any() ? i.Items.Concat(GetSubItems(i.Items, predicate)) : i.Items);
 
         /// <summary>
         /// 级联设置复选状态

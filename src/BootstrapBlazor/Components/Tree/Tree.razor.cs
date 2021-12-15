@@ -216,7 +216,11 @@ namespace BootstrapBlazor.Components
             if (OnTreeItemChecked != null) await OnTreeItemChecked(item);
             if (OnCheckedItems != null)
             {
-                var checkedItems = Items.Where(s => s.Checked).ToList();
+                var checkedItems = Items.Aggregate(new List<TreeItem>(), (t, item) =>
+                {
+                    t.AddRange(item.GetAllSubItems(t => t.Checked));
+                    return t;
+                });
                 await OnCheckedItems(checkedItems);
             }
         }
