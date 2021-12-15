@@ -20,12 +20,6 @@ namespace BootstrapBlazor.Components
         public Func<IEnumerable<TItem>, Task>? OnClickCallback { get; set; }
 
         /// <summary>
-        /// 获得/设置 是否显示在行扩展按钮中
-        /// </summary>
-        [Parameter]
-        public bool ShowInRow { get; set; }
-
-        /// <summary>
         /// 获得/设置 Table Toolbar 实例
         /// </summary>
         [CascadingParameter]
