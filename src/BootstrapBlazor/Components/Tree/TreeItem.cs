@@ -88,14 +88,11 @@ namespace BootstrapBlazor.Components
         /// 获得 所有子项集合
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<TreeItem> GetAllSubItems(Func<TreeItem, bool>? predicate = null) => Items.Concat(GetSubItems(Items, predicate));
+        public IEnumerable<TreeItem> GetAllSubItems(Func<TreeItem, bool>? predicate = null) => Items
+            .Where(predicate ?? new Func<TreeItem, bool>(_ => true))
+            .Concat(GetSubItems(Items, predicate));
 
-        private static IEnumerable<TreeItem> GetSubItems(List<TreeItem> items, Func<TreeItem, bool>? predicate = null) => items.Where(predicate ?? new Func<TreeItem, bool>(_ => true)).SelectMany(i =>
-        {
-            var a = i.Items.Any() ? i.Items.Concat(GetSubItems(i.Items, predicate)) : i.Items.Where(predicate ?? new Func<TreeItem, bool>(_ => true));
-
-            return a;
-        });
+        private static IEnumerable<TreeItem> GetSubItems(List<TreeItem> items, Func<TreeItem, bool>? predicate = null) => items.Where(predicate ?? new Func<TreeItem, bool>(_ => true)).SelectMany(i => i.Items.Any() ? i.Items.Where(predicate ?? new Func<TreeItem, bool>(_ => true)).Concat(GetSubItems(i.Items, predicate)) : i.Items.Where(predicate ?? new Func<TreeItem, bool>(_ => true)));
 
         /// <summary>
         /// 级联设置复选状态

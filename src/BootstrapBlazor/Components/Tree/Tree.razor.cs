@@ -211,6 +211,10 @@ namespace BootstrapBlazor.Components
             {
                 var checkedItems = Items.Aggregate(new List<TreeItem>(), (t, item) =>
                 {
+                    if (item.Checked)
+                    {
+                        t.Add(item);
+                    }
                     t.AddRange(item.GetAllSubItems(t => t.Checked));
                     return t;
                 });
