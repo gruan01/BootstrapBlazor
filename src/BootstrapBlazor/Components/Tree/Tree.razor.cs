@@ -117,13 +117,7 @@ namespace BootstrapBlazor.Components
         /// 获得/设置 树形控件节点选中时回调委托
         /// </summary>
         [Parameter]
-        public Func<TreeItem, Task> OnTreeItemChecked { get; set; } = item => Task.CompletedTask;
-
-        /// <summary>
-        /// 获得/设置 树形控件节点选中时返回当前所有选中项回调委托
-        /// </summary>
-        [Parameter]
-        public Func<List<TreeItem>, Task>? OnCheckedItems { get; set; }
+        public Func<List<TreeItem>, Task> OnTreeItemChecked { get; set; } = item => Task.CompletedTask;
 
         /// <summary>
         /// 获得/设置 节点展开前回调委托
@@ -213,15 +207,14 @@ namespace BootstrapBlazor.Components
             // 向下级联操作
             item.CascadeSetCheck(item.Checked);
 
-            if (OnTreeItemChecked != null) await OnTreeItemChecked(item);
-            if (OnCheckedItems != null)
+            if (OnTreeItemChecked != null)
             {
                 var checkedItems = Items.Aggregate(new List<TreeItem>(), (t, item) =>
                 {
                     t.AddRange(item.GetAllSubItems(t => t.Checked));
                     return t;
                 });
-                await OnCheckedItems(checkedItems);
+                await OnTreeItemChecked(checkedItems);
             }
         }
     }
