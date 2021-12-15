@@ -3,22 +3,26 @@
 // Website: https://www.blazor.zone or https://argozhang.github.io/
 
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
 using System;
-using System.Threading.Tasks;
 
 namespace BootstrapBlazor.Components
 {
     /// <summary>
     /// 单元格内按钮组件
     /// </summary>
-    public class TableCellButton : Button
+    public class TableCellButton : ButtonBase, IDisposable
     {
         /// <summary>
-        /// 获得/设置 按钮点击后的回调方法
+        /// 获得/设置 Table Toolbar 实例
+        /// </summary>
+        [CascadingParameter]
+        protected TableExtensionButton? Buttons { get; set; }
+
+        /// <summary>
+        /// 获得/设置 点击按钮是否选中正行 默认 true 选中
         /// </summary>
         [Parameter]
-        public Func<Task>? OnClickCallback { get; set; }
+        public bool AutoSelectedRowWhenClick { get; set; } = true;
 
         /// <summary>
         /// OnInitialized 方法
@@ -27,36 +31,33 @@ namespace BootstrapBlazor.Components
         {
             base.OnInitialized();
 
+            Buttons?.AddButton(this);
+
             if (Size == Size.None)
             {
                 Size = Size.ExtraSmall;
             }
+        }
 
-            OnClickButton = EventCallback.Factory.Create<MouseEventArgs>(this, async e =>
+        /// <summary>
+        /// Dispose 方法
+        /// </summary>
+        /// <param name="disposing"></param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
             {
-                if (IsAsync)
-                {
-                    ButtonIcon = LoadingIcon;
-                    IsDisabled = true;
-                }
-                if (OnClickWithoutRender != null)
-                {
-                    await OnClickWithoutRender();
-                }
-                if (OnClickCallback != null)
-                {
-                    await OnClickCallback();
-                }
-                if (OnClick.HasDelegate)
-                {
-                    await OnClick.InvokeAsync(e);
-                }
-                if (IsAsync)
-                {
-                    ButtonIcon = Icon;
-                    IsDisabled = false;
-                }
-            });
+                Buttons?.RemoveButton(this);
+            }
+        }
+
+        /// <summary>
+        /// Dispose 方法
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 }
