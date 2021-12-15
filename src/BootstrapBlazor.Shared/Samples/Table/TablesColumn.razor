@@ -75,11 +75,11 @@
             <TableColumn @bind-Field="@context.Address" />
         </TableColumns>
         <RowButtonTemplate>
-            <TableCellButton Size="Size.ExtraSmall" Color="Color.Primary" Icon="fa fa-edit" Text="明细" OnClick="@(() => OnRowButtonClick(context))" />
-            <TableCellButton Size="Size.ExtraSmall" Color="Color.Success" Icon="fa fa-edit" Text="编辑" OnClick="@(() => OnRowButtonClick(context))" />
-            <TableCellButton Size="Size.ExtraSmall" Color="Color.Warning" Icon="fa fa-edit" Text="权限" OnClick="@(() => OnRowButtonClick(context))" />
-            <TableCellButton Size="Size.ExtraSmall" Color="Color.Danger" Icon="fa fa-edit" Text="审批" OnClick="@(() => OnRowButtonClick(context))" />
-            <PopConfirmButton Text="确认" Color="Color.Info" Icon="fa fa-edit" Size="Size.ExtraSmall" OnConfirm="@(() => OnRowButtonClick(context))" />
+            <TableCellButton Color="Color.Primary" Icon="fa fa-edit" Text="明细" OnClick="@(() => OnRowButtonClick(context, "明细"))" />
+            <TableCellButton Color="Color.Success" Icon="fa fa-edit" Text="编辑" OnClick="@(() => OnRowButtonClick(context, "编辑"))" />
+            <TableCellButton Color="Color.Warning" Icon="fa fa-edit" Text="权限" OnClick="@(() => OnRowButtonClick(context, "权限"))" />
+            <TableCellButton Color="Color.Danger" Icon="fa fa-edit" Text="审批" OnClick="@(() => OnRowButtonClick(context, "审批"))" />
+            <TableCellPopconfirmButton Color="Color.Info" Icon="fa fa-edit" Text="确认" OnConfirm="@(() => OnRowButtonClick(context, "确认"))" />
         </RowButtonTemplate>
     </Table>
 </DemoBlock>
