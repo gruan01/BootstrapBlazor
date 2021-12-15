@@ -152,7 +152,7 @@ namespace BootstrapBlazor.Shared.Samples
             }
         }
 
-        private Task OnCheckedItems(List<TreeItem> items)
+        private Task OnTreeItemChecked(List<TreeItem> items)
         {
             TraceCheckedItems.Log($"当前共选中{items.Count}项");
             return Task.CompletedTask;
