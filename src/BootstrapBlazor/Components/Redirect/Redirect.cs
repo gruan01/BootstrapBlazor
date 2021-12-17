@@ -16,6 +16,9 @@ namespace BootstrapBlazor.Components
         [NotNull]
         private NavigationManager? Navigation { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
         [Parameter]
         public string Url { get; set; } = "Account/Login";
 
