@@ -24,7 +24,7 @@ namespace BootstrapBlazor.Components
 
 #if DEBUG
         /// <summary>
-        /// 
+        /// OnAfterRender 方法
         /// </summary>
         /// <param name="firstRender"></param>
         protected override void OnAfterRender(bool firstRender)
@@ -32,6 +32,9 @@ namespace BootstrapBlazor.Components
             Navigation.NavigateTo(Url, true);
         }
 #else
+        /// <summary>
+        /// OnInitialized 方法
+        /// </summary>
         protected override void OnInitialized()
         {
             Navigation.NavigateTo(Url, true);
