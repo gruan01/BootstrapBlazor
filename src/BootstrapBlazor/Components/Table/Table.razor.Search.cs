@@ -131,13 +131,15 @@ namespace BootstrapBlazor.Components
             {
                 CustomerSearchModel.Reset();
             }
-            else if (OnResetSearchAsync != null)
-            {
-                await OnResetSearchAsync(SearchModel);
-            }
             else if (SearchTemplate == null)
             {
                 Utility.Reset(SearchModel);
+            }
+
+            //无论如何, 这个都应该调用.
+            if (OnResetSearchAsync != null)
+            {
+                await OnResetSearchAsync(SearchModel);
             }
 
             PageIndex = 1;
@@ -176,6 +178,7 @@ namespace BootstrapBlazor.Components
                 DialogBodyTemplate = SearchTemplate,
                 OnResetSearchClick = ResetSearchClick,
                 OnSearchClick = SearchClick,
+                ResetButtonText = ResetSearchButtonText,
                 RowType = SearchDialogRowType,
                 ItemsPerRow = SearchDialogItemsPerRow,
                 LabelAlign = SearchDialogLabelAlign,
@@ -190,9 +193,10 @@ namespace BootstrapBlazor.Components
                 DialogBodyTemplate = CustomerSearchTemplate,
                 OnResetSearchClick = ResetSearchClick,
                 OnSearchClick = SearchClick,
+                ResetButtonText = ResetSearchButtonText,
                 RowType = SearchDialogRowType,
                 ItemsPerRow = SearchDialogItemsPerRow,
-                LabelAlign = SearchDialogLabelAlign
+                LabelAlign = SearchDialogLabelAlign,
             };
         }
 

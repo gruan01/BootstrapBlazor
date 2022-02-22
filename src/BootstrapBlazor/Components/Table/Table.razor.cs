@@ -21,7 +21,7 @@ namespace BootstrapBlazor.Components
 #if NET6_0_OR_GREATER
     [CascadingTypeParameter(nameof(TItem))]
 #endif
-    public partial class Table<TItem> : BootstrapComponentBase, IDisposable, ITable where TItem : class, new()
+    public partial class Table<TItem> : BootstrapComponentBase, IDisposable, ITable, IRenderFlag where TItem : class, new()
     {
         [NotNull]
         private JSInterop<Table<TItem>>? Interop { get; set; }
@@ -701,6 +701,18 @@ namespace BootstrapBlazor.Components
         /// </summary>
         protected bool FirstRender { get; set; } = true;
 
+
+        /// <summary>
+        /// 
+        /// </summary>
+        void IRenderFlag.Reset()
+        {
+            this.FirstRender = true;
+            this.OnAfterRenderIsTriggered = false;
+            this.Columns.Clear();
+        }
+
+
         private CancellationTokenSource? AutoRefreshCancelTokenSource { get; set; }
 
         /// <summary>
@@ -758,7 +770,7 @@ namespace BootstrapBlazor.Components
         {
             await base.OnAfterRenderAsync(firstRender);
 
-            if (firstRender)
+            if (this.FirstRender)
             {
                 if (ShowSearch)
                 {
@@ -783,7 +795,17 @@ namespace BootstrapBlazor.Components
                 // 初始化列
                 if (AutoGenerateColumns)
                 {
-                    var cols = InternalTableColumn.GetProperties<TItem>(Columns);
+                    //var cols = InternalTableColumn.GetProperties<TItem>(Columns);
+
+                    IEnumerable<ITableColumn> cols;
+                    // 获取绑定模型所有属性
+                    if (this.Items?.Any() ?? false)
+                    {
+                        cols = InternalTableColumn.GetProperties(this.Items.First().GetType(), Columns);
+                    }
+                    else
+                        cols = InternalTableColumn.GetProperties<TItem>(Columns);
+
                     Columns.Clear();
                     Columns.AddRange(cols);
                 }
@@ -823,7 +845,8 @@ namespace BootstrapBlazor.Components
             if (_init)
             {
                 _init = false;
-                await Interop.InvokeVoidAsync(this, TableElement, "bb_table", "init", new { unset = UnsetText, sortAsc = SortAscText, sortDesc = SortDescText });
+                if (Interop != null)
+                    await Interop.InvokeVoidAsync(this, TableElement, "bb_table", "init", new { unset = UnsetText, sortAsc = SortAscText, sortDesc = SortDescText });
             }
 
             // 增加去重保护 _loop 为 false 时执行
