@@ -30,6 +30,12 @@ namespace BootstrapBlazor.Components
         private Dialog? TableDialog { get; set; }
 
         /// <summary>
+        /// 分组显示顺序， 值越小越靠前
+        /// </summary>
+        [Parameter]
+        public Dictionary<string, int>? CategoryOrders { get; set; }
+
+        /// <summary>
         /// 获得 Table 组件样式表
         /// </summary>
         private string? ClassName => CssBuilder.Default("table-container")
@@ -801,10 +807,10 @@ namespace BootstrapBlazor.Components
                     // 获取绑定模型所有属性
                     if (this.Items?.Any() ?? false)
                     {
-                        cols = InternalTableColumn.GetProperties(this.Items.First().GetType(), Columns);
+                        cols = InternalTableColumn.GetProperties(this.Items.First().GetType(), Columns, this.CategoryOrders);
                     }
                     else
-                        cols = InternalTableColumn.GetProperties<TItem>(Columns);
+                        cols = InternalTableColumn.GetProperties<TItem>(Columns, this.CategoryOrders);
 
                     Columns.Clear();
                     Columns.AddRange(cols);

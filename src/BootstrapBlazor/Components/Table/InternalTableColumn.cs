@@ -161,15 +161,16 @@ namespace BootstrapBlazor.Components
         /// <typeparam name="TModel"></typeparam>
         /// <param name="source"></param>
         /// <returns></returns>
-        public static IEnumerable<ITableColumn> GetProperties<TModel>(IEnumerable<ITableColumn>? source = null) => GetProperties(typeof(TModel), source);
+        public static IEnumerable<ITableColumn> GetProperties<TModel>(IEnumerable<ITableColumn>? source = null, Dictionary<string, int>? categoryOrder = null) => GetProperties(typeof(TModel), source, categoryOrder);
 
         /// <summary>
         /// 通过特定类型模型获取模型属性集合
         /// </summary>
         /// <param name="type"></param>
         /// <param name="source"></param>
+        /// <param name="categoryOrder">分类排序</param>
         /// <returns></returns>
-        public static IEnumerable<ITableColumn> GetProperties(Type type, IEnumerable<ITableColumn>? source = null)
+        public static IEnumerable<ITableColumn> GetProperties(Type type, IEnumerable<ITableColumn>? source = null, Dictionary<string, int>? categoryOrder = null)
         {
             var cols = new List<ITableColumn>(50);
             //使用 TypeDescriptor 代替 Reflection,
@@ -199,9 +200,37 @@ namespace BootstrapBlazor.Components
                 cols.Add(tc);
             }
 
-            return cols.Where(a => a.Order > 0).OrderBy(a => a.Order)
-                .Concat(cols.Where(a => a.Order == 0))
-                .Concat(cols.Where(a => a.Order < 0).OrderBy(a => a.Order));
+
+            return cols.OrderBy(c => GetCategoryOrder(categoryOrder, c.Category))
+                .ThenBy(c => c.Category)
+                .ThenBy(c => c.Order);
+
+            //这个排序是毛意思??
+            // -4 -3 -2 -1 0 0 1 2 3 4 ??
+            // 
+            //return cols.Where(a => a.Order > 0).OrderBy(a => a.Order)
+            //    .Concat(cols.Where(a => a.Order == 0))
+            //    .Concat(cols.Where(a => a.Order < 0).OrderBy(a => a.Order));
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="categoryOrder"></param>
+        /// <param name="category"></param>
+        /// <returns></returns>
+        private static int GetCategoryOrder(Dictionary<string, int>? categoryOrder, string? category)
+        {
+            if (string.IsNullOrWhiteSpace(category) || string.Equals(category, "other", StringComparison.OrdinalIgnoreCase))
+                return int.MaxValue;
+
+            if ((categoryOrder?.Any() ?? false) && categoryOrder.ContainsKey(category))
+            {
+                return categoryOrder[category];
+            }
+
+            return int.MaxValue - 1;
         }
 
 
