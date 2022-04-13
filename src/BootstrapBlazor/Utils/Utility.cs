@@ -377,7 +377,13 @@ namespace BootstrapBlazor.Components
             var type = nullableType ?? fieldType;
             if (type.IsEnum || lookup != null)
             {
-                ret = typeof(Select<>).MakeGenericType(fieldType);
+                if (type.CustomAttributes.Any(a => a.AttributeType == typeof(FlagsAttribute)))
+                {
+                    //带 [Flags] 属性的枚举, 用 MultiSelect 来渲染
+                    ret = typeof(MultiSelect<>).MakeGenericType(fieldType);
+                }
+                else
+                    ret = typeof(Select<>).MakeGenericType(fieldType);
             }
             else if (IsCheckboxList(type))
             {
@@ -592,6 +598,12 @@ namespace BootstrapBlazor.Components
                 var invoker = CacheManager.CreateConverterInvoker(t);
                 var v = invoker.Invoke(instance);
                 ret = string.Join(",", v);
+            }
+            else if (typeValue.IsEnum)
+            {
+                var str = Enum.Format(typeValue, value!, "f");
+                ret = string.Join(',', str.Split(',').Select(s => s.Trim()));
+                //ret = value!.ToString();
             }
             return ret;
         }

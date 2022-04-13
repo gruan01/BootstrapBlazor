@@ -7,6 +7,7 @@ using BootstrapBlazor.Shared.Common;
 using BootstrapBlazor.Shared.Components;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
@@ -23,6 +24,21 @@ namespace BootstrapBlazor.Shared.Samples
 
         [NotNull]
         private BlockLogger? Trace2 { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private TEnum flagEnum = TEnum.G | TEnum.H;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="aa"></param>
+        /// <returns></returns>
+        private Task FlagEnumChanged(IEnumerable<SelectedItem> aa)
+        {
+            return Task.CompletedTask;
+        }
 
         /// <summary>
         /// 级联绑定菜单
@@ -392,5 +408,27 @@ namespace BootstrapBlazor.Shared.Samples
                 DefaultValue = " — "
             }
         };
+
+
+
+        [Flags]
+        public enum TEnum
+        {
+            [Description("AAAAA")]
+            A = 1 << 0,
+
+            [Description("BBBBBB")]
+            B = 1 << 1,
+
+            [Description("CCCCCC")]
+            C = 1 << 2,
+            D = 1 << 3,
+            E = 1 << 4,
+            F = 1 << 5,
+            G = 1 << 6,
+            H = 1 << 7,
+            I = 1 << 8,
+            J = 1 << 9,
+        }
     }
 }

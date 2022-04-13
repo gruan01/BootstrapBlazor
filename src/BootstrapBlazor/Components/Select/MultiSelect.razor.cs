@@ -161,6 +161,11 @@ namespace BootstrapBlazor.Components
         private IStringLocalizer<MultiSelect<TValue>>? Localizer { get; set; }
 
         /// <summary>
+        /// 是否是带 Flags 属性的类型
+        /// </summary>
+        private bool isFlagsEnum;
+
+        /// <summary>
         /// OnInitialized 方法
         /// </summary>
         protected override void OnInitialized()
@@ -199,6 +204,16 @@ namespace BootstrapBlazor.Components
         {
             await base.OnParametersSetAsync();
 
+            // 内置对 [Flag] 枚举的支持
+            var t = NullableUnderlyingType ?? typeof(TValue);
+            this.isFlagsEnum = t.IsEnum() && t.CustomAttributes.Any(c => c.AttributeType == typeof(FlagsAttribute));
+
+            if (!Items.Any() && this.isFlagsEnum /*t.IsEnum() && t.CustomAttributes.Any(c => c.AttributeType == typeof(FlagsAttribute))*/)
+            {
+                var item = NullableUnderlyingType == null ? "" : PlaceHolder;
+                Items = typeof(TValue).ToSelectList(string.IsNullOrEmpty(item) ? null : new SelectedItem("", item));
+            }
+
             // 通过 Value 对集合进行赋值
             var list = CurrentValueAsString.Split(',', StringSplitOptions.RemoveEmptyEntries);
             foreach (var item in Items)
@@ -227,6 +242,32 @@ namespace BootstrapBlazor.Components
         protected override string? FormatValueAsString(TValue value) => value == null
             ? null
             : Utility.ConvertValueToString(value);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="result"></param>
+        /// <param name="validationErrorMessage"></param>
+        /// <returns></returns>
+        protected override bool TryParseValueFromString(string value, [MaybeNullWhen(false)] out TValue result, out string? validationErrorMessage)
+        {
+            var typeValue = NullableUnderlyingType ?? typeof(TValue);
+            //if (typeValue.IsEnum && typeValue.CustomAttributes.Any(c => c.AttributeType == typeof(FlagsAttribute)))
+            if (this.isFlagsEnum)
+            {
+                var vs = value.Split(',').Select(v => (int)Enum.Parse(typeValue, v.Trim()));
+                var v = 0;
+                foreach (var vv in vs)
+                    v |= vv;
+
+                result = (TValue)(object)v;
+                validationErrorMessage = null;
+                return true;
+            }
+            else
+                return base.TryParseValueFromString(value, out result, out validationErrorMessage);
+        }
 
         /// <summary>
         /// OnAfterRenderAsync 方法
@@ -318,6 +359,22 @@ namespace BootstrapBlazor.Components
                     }
                 }
                 CurrentValue = (TValue)(typeValue.IsGenericType ? instance : listType.GetMethod("ToArray")!.Invoke(instance, null)!);
+            }
+            //else if (typeValue.IsEnum && typeValue.CustomAttributes.Any(c => c.AttributeType == typeof(FlagsAttribute)))
+            else if (this.isFlagsEnum)
+            {
+                var t = typeValue.IsGenericType ? typeValue.GenericTypeArguments[0] : typeValue;
+                int v = 0;
+                foreach (var item in SelectedItems)
+                {
+                    if (item.Value.TryConvertTo(t, out var val))
+                    {
+                        v |= (int)val!;
+                    }
+                }
+
+                CurrentValue = (TValue)(object)v;
+                CurrentValueAsString = CurrentValue?.ToString() ?? "";
             }
         }
 

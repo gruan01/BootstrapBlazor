@@ -9,13 +9,15 @@
   <ItemGroup>
     <Content Remove="Locales\*.json" />
     <EmbeddedResource Include="Locales\*.json" />
+    <Compile Remove="Samples\Markdowns.razor.cs" />
     <Content Remove="docs.json" />
+    <Content Remove="Samples\Markdowns.razor" />
     <EmbeddedResource Include="docs.json" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="BootstrapBlazor.Chart" Version="6.*" />
-    <PackageReference Include="BootstrapBlazor.Markdown" Version="6.*" />
+    <!--<PackageReference Include="BootstrapBlazor.Markdown" Version="6.*" />-->
     <PackageReference Include="BootstrapBlazor.TableExport" Version="6.*" />
     <PackageReference Include="System.Text.Json" Version="6.*" />
   </ItemGroup>
