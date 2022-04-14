@@ -338,7 +338,7 @@ namespace BootstrapBlazor.Components
         /// 获得/设置 显示顺序
         /// </summary>
         [Parameter]
-        public int Order { get; set; }
+        public int? Order { get; set; }
 
         /// <summary>
         /// 获得/设置 字典数据源 常用于外键自动转换为名称操作

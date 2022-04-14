@@ -66,13 +66,7 @@ namespace BootstrapBlazor.Components
     public class AutoGenerateColumnInfo : AutoGenerateClassInfo
     {
         /// <summary>
-        /// 获得/设置 显示顺序 ，规则如下：
-        /// <para></para>
-        /// &gt;0时排前面，1,2,3...
-        /// <para></para>
-        /// =0时排中间(默认)
-        /// <para></para>
-        /// &lt;0时排后面，...-3,-2,-1
+        /// 
         /// </summary>
         public int? Order { get; set; }
 

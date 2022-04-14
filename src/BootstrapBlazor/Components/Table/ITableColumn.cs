@@ -121,7 +121,7 @@ namespace BootstrapBlazor.Components
         /// <summary>
         /// 获得/设置 顺序号
         /// </summary>
-        int Order { get; set; }
+        int? Order { get; set; }
 
         /// <summary>
         /// 获得/设置 单元格回调方法

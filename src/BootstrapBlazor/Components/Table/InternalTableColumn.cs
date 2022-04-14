@@ -114,7 +114,7 @@ namespace BootstrapBlazor.Components
         /// <summary>
         /// 获得/设置 显示顺序
         /// </summary>
-        public int Order { get; set; }
+        public int? Order { get; set; }
 
         /// <summary>
         /// 获得/设置 字典数据源 常用于外键自动转换为名称操作
@@ -160,6 +160,7 @@ namespace BootstrapBlazor.Components
         /// </summary>
         /// <typeparam name="TModel"></typeparam>
         /// <param name="source"></param>
+        /// <param name="categoryOrder"></param>
         /// <returns></returns>
         public static IEnumerable<ITableColumn> GetProperties<TModel>(IEnumerable<ITableColumn>? source = null, Dictionary<string, int>? categoryOrder = null) => GetProperties(typeof(TModel), source, categoryOrder);
 
@@ -203,7 +204,7 @@ namespace BootstrapBlazor.Components
 
             return cols.OrderBy(c => GetCategoryOrder(categoryOrder, c.Category))
                 .ThenBy(c => c.Category)
-                .ThenBy(c => c.Order);
+                .ThenBy(c => c.Order ?? int.MaxValue);
 
             //这个排序是毛意思??
             // -4 -3 -2 -1 0 0 1 2 3 4 ??
@@ -269,7 +270,7 @@ namespace BootstrapBlazor.Components
             this.FormatString = col?.FormatString ?? propInfo?.FormatString;
             this.IsReadonlyWhenAdd = col?.IsReadonlyWhenAdd ?? propInfo?.IsReadonlyWhenAdd ?? false;
             this.IsReadonlyWhenEdit = col?.IsReadonlyWhenEdit ?? propInfo?.IsReadonlyWhenEdit ?? false;
-            this.Order = col?.Order ?? propInfo?.Order ?? 0;
+            this.Order = col?.Order ?? propInfo?.Order;
             this.PlaceHolder = col?.PlaceHolder ?? propInfo?.PlaceHolder;
             this.Rows = col?.Rows ?? propInfo?.Rows ?? 0;
             this.ShownWithBreakPoint = col?.ShownWithBreakPoint ?? propInfo?.ShownWithBreakPoint ?? BreakPoint.None;
