@@ -38,7 +38,7 @@ namespace BootstrapBlazor.Components
         /// @bind-Value="model.PropertyName"
         /// </example>
         [Parameter]
-        public TValue Value { get; set; }
+        public virtual TValue Value { get; set; }
 #nullable restore
 
         /// <summary>

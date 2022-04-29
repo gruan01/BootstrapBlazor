@@ -78,7 +78,7 @@ namespace BootstrapBlazor.Components
         /// 获得/设置 组件值
         /// </summary>
         [Parameter]
-        public string? Value
+        public override string? Value
         {
             get { return _value; }
             set
@@ -91,23 +91,24 @@ namespace BootstrapBlazor.Components
             }
         }
 
-        /// <summary>
-        /// 获得/设置 组件值变化后的回调委托
-        /// </summary>
-        [Parameter]
-        public EventCallback<string?> ValueChanged { get; set; }
+        ///// <summary>
+        ///// 获得/设置 组件值变化后的回调委托
+        ///// </summary>
+        //[Parameter]
+        //public EventCallback<string?> ValueChanged { get; set; }
 
-        /// <summary>
-        /// 获得/设置 组件值变化后的回调委托
-        /// </summary>
-        [Parameter]
-        public Func<string, Task>? OnValueChanged { get; set; }
+        ///// <summary>
+        ///// 获得/设置 组件值变化后的回调委托
+        ///// </summary>
+        //[Parameter]
+        //public Func<string, Task>? OnValueChanged { get; set; }
 
         /// <summary>
         /// 获取/设置 插件点击时的回调委托
         /// </summary>
         [Parameter]
         public Func<string, Task<string>>? OnClickButton { get; set; }
+
 
         /// <summary>
         /// OnInitialized 方法

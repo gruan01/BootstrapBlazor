@@ -1,5 +1,6 @@
 ﻿@namespace BootstrapBlazor.Components
-@inherits BootstrapComponentBase
+@*@inherits BootstrapComponentBase*@
+@inherits ValidateBase<string>
 
 <div @attributes="@AdditionalAttributes" class="editor" @ref="EditorElement">
     <div class="@EditClassString" placeholder="@PlaceHolder"></div>
