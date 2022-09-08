@@ -831,7 +831,10 @@ namespace BootstrapBlazor.Components
                     SortOrder = col.DefaultSortOrder;
                 }
 
-                await QueryAsync();
+                if (this.IsAutoRefresh)
+                    await QueryAsync();
+                else
+                    this.StateHasChanged();
 
                 // 设置 init 执行客户端脚本
                 _init = true;
